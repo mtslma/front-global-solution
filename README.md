@@ -46,7 +46,7 @@ Para rodar o frontend do Ponto Seguro localmente, siga os passos abaixo:
 
 1.  **Clone o repositório do frontend:**
     ```bash
-    git clone [https://github.com/mtslma/front-global-solution](https://github.com/mtslma/front-global-solution)
+    git clone https://github.com/mtslma/front-global-solution
     cd front-global-solution
     ```
 
@@ -57,13 +57,7 @@ Para rodar o frontend do Ponto Seguro localmente, siga os passos abaixo:
     yarn install
     ```
 
-3.  **Configure as variáveis de ambiente:**
-    Crie um arquivo `.env.local` na raiz do projeto frontend e adicione as variáveis necessárias. A principal será o endereço da sua API backend:
-    ```env
-    NEXT_PUBLIC_API_URL=http://localhost:8080 # Ou a URL da sua API Quarkus rodando localmente/em desenvolvimento
-    ```
-
-4.  **Rode o servidor de desenvolvimento:**
+3.  **Rode o servidor de desenvolvimento:**
     ```bash
     npm run dev
     # ou
