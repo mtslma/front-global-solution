@@ -6,8 +6,6 @@
 
 [![Assista ao Vídeo de Demonstração](https://img.youtube.com/vi/SEU_ID_DO_SEU_VIDEO/0.jpg)](https://www.youtube.com/watch?v=ID_DO_SEU_VIDEO)
 
-*(Substitua `ID_DO_SEU_VIDEO` pelo ID real do seu vídeo no YouTube. Se o vídeo estiver em outra plataforma, ajuste o link e a imagem de thumbnail conforme necessário).*
-
 ---
 
 ## Sobre o Projeto
@@ -71,9 +69,9 @@ Para rodar o frontend do Ponto Seguro localmente, siga os passos abaixo:
 
 ### Frontend (Next.js)
 
-O frontend da aplicação pode ser acessado em: [ADICIONAR O LINK DA VERCEL]()
+O frontend da aplicação pode ser acessado em: [https://ponto-seguro.vercel.app](https://ponto-seguro.vercel.app)
 
 ### Backend (API Java com Quarkus)
 
-A API que faz conexão do Front com o banco de dados está hospedada em: [ADICIONAR O LINK AQUI]()
+A API está hospedada em: [[ADICIONAR O LINK AQUI](https://java-global-deploy.onrender.com)](https://java-global-deploy.onrender.com)
 
