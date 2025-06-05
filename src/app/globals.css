@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@import "leaflet/dist/leaflet.css";
+@import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Em globals.css ou seu arquivo CSS principal */
+@keyframes progressBarShrink {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}
+
+/* Classe para aplicar a animação */
+.popup-progress-bar-animate {
+    animation-name: progressBarShrink;
+    animation-timing-function: linear; /* Garante que a animação seja suave e constante */
+    animation-fill-mode: forwards; /* Mantém o estado final da animação (largura 0%) */
+}
+
+/* Remove o padding padrão do conteúdo do popup */
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    padding: 0 !important; /* Forçar a sobrescrita */
+    margin: 0 !important; /* Forçar a sobrescrita */
+}
+
+/* Opcional: Ajusta o padding do wrapper externo do popup */
+.leaflet-popup-content-wrapper {
+    padding: 10px !important;
+}
+
+/* Ajuste para a imagem dentro do popup, */
+.leaflet-popup-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.leaflet-popup-content-wrapper .leaflet-popup-content p {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+

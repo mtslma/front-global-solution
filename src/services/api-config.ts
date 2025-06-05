@@ -1,0 +1,2 @@
+export const API_BASE = "http://localhost:8080"; 
+export const API_KEY = "eb24e9b8-35b9-48e4-97e9-8257903f0288";
