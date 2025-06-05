@@ -1,8 +1,6 @@
 import L, { DivIcon } from 'leaflet';
 import { Ocorrencia } from '@/types/types';
 
-
-
 // Cria um ícone customizado (L.DivIcon) para marcadores de alerta de ocorrências.
 export const criarIconeAlerta = (tipo: Ocorrencia["tipoOcorrencia"]): DivIcon => {
     let htmlContent = "", cor = "";

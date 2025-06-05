@@ -1,33 +1,5 @@
+import { formatDistance, getInstructionIcon } from "@/services/traduzir-rota";
 import { Routing } from "leaflet";
-
-// Função auxiliar para obter ícone visual para cada tipo de instrução de rota.
-const getInstructionIcon = (type: string | undefined): string => {
-    if (!type) return "➡️";
-    type = type.toLowerCase();
-    if (type.includes("straight") || type.includes("continue")) return "⬆️";
-    if (type.includes("slight right") || type.includes("bear right")) return "↗️";
-    if (type.includes("right")) return "➡️";
-    if (type.includes("sharp right")) return "↪️";
-    if (type.includes("turnaround") || type.includes("u-turn")) return "U🔄";
-    if (type.includes("slight left") || type.includes("bear left")) return "↖️";
-    if (type.includes("left")) return "⬅️";
-    if (type.includes("sharp left")) return "↩️";
-    if (type.includes("destination") || type.includes("arrive")) return "📍";
-    if (type.includes("roundabout") || type.includes("rotary")) return "🔄";
-    if (type.includes("exit roundabout") || type.includes("exit rotary")) return "↘️";
-    if (type.includes("fork")) return "🍴";
-    if (type.includes("merge")) return " M ";
-    return "●"; // Ícone padrão para tipos não mapeados.
-};
-
-// Função auxiliar para formatar distância de metros para km ou m.
-const formatDistance = (meters: number): string => {
-    if (isNaN(meters)) return "";
-    if (meters >= 1000) {
-        return `${(meters / 1000).toFixed(1)} km`;
-    }
-    return `${Math.round(meters)} m`;
-};
 
 interface DetalhesRotaTracadaProps {
     rotaInstrucoes: Routing.IInstruction[] | null;

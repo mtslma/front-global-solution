@@ -7,7 +7,6 @@ import Link from "next/link";
 export default function ErrorPage({ error }: ErrorPageProps) {
     return (
         // Contêiner principal que ocupa no mínimo toda a altura da tela,
-        // centraliza o conteúdo e define uma cor de fundo.
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-slate-100 text-center font-sans">
             {/* Contêiner para o conteúdo da página de erro, com largura máxima e centralizado. */}
             <div className="max-w-lg w-full">

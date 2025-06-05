@@ -1,18 +1,8 @@
 "use client";
 
 import React from "react";
-import { Cidade } from "@/types/types";
 import CaixaCidade from "@/components/CaixasInformacoes/CaixaCidade/CaixaCidade";
-
-interface ListaCidadesCadastradasProps {
-    cidades: Cidade[];
-    isDeleting: string | null;
-    onExcluirCidade?: (idCidade: string) => void;
-    onEditarCidade?: (idCidade: string) => void;
-    onVerDetalhesCidade?: (idCidade: string) => void;
-    className?: string;
-    error?: string | null;
-}
+import { ListaCidadesCadastradasProps } from "@/types/types";
 
 export default function ListaCidadesCadastradas({ cidades, isDeleting, onExcluirCidade, className = "lg:col-span-2 p-6 bg-white rounded-xl shadow-xl border border-gray-200 h-full", error }: ListaCidadesCadastradasProps) {
     return (

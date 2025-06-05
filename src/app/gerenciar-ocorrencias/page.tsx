@@ -8,7 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import AlertPopup from "@/components/AlertPopUp/AlertaPopUp";
 import CustomAlert from "@/components/CustomAlert/CustomAlert";
 import Link from "next/link";
-import { Cidade, NovaOcorrenciaFormData, Ocorrencia } from "@/types/types";
+import { Cidade, NovaOcorrenciaFormData, Ocorrencia, sessaoBody } from "@/types/types";
 
 import RegistrarOcorrenciaForm from "@/components/Formularios/RegistrarOcorrenciaForm/RegistrarOcorrenciaForm";
 import ListaOcorrenciasRegistradas from "@/components/Listas/ListaOcorrenciasRegistradas/ListaOcorrenciasRegistradas";
@@ -54,6 +54,64 @@ export default function OcorrenciasPage() {
         setIsPopupVisible(true);
         setTimeout(() => setIsPopupVisible(false), duration);
     }, []);
+
+    // Busca os dados da sessão do usuário
+    const buscarSessao = useCallback(async (token: string): Promise<sessaoBody | null> => {
+        try {
+            const response = await fetch(`${API_BASE}/sessao/${token}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+            });
+            if (!response.ok) {
+                // Se a sessão não for válida, remove o token do localStorage
+                localStorage.removeItem("session-token");
+                console.warn("Sessão existente inválida, token removido.");
+                return null;
+            }
+            const sessaoData: sessaoBody = await response.json();
+            // Validação adicional para os dados da sessão
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                localStorage.removeItem("session-token"); // Garante limpeza se dados da sessão forem inconsistentes
+                throw new Error("Dados da sessão inválidos ou usuário não encontrado.");
+            }
+            return sessaoData;
+        } catch (err) {
+            console.error("Erro de conexão ao buscar sessão:", err);
+            return null; // Retorna null em caso de erro de fetch ou parse
+        }
+    }, []);
+
+    // useEffect para validação da sessão do usuário e autorização de acesso à página
+    useEffect(() => {
+        const validateUserSessionAndAuthorize = async () => {
+            const token = localStorage.getItem("session-token");
+
+            if (!token) {
+                // Redireciona para login se não houver token
+                window.location.href = "/login";
+                return; // Interrompe a execução para evitar updates de estado desnecessários
+            }
+
+            const sessaoData = await buscarSessao(token);
+
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                // Se buscarSessao retornou null (sessão inválida, erro de API, etc.),
+                // o token já pode ter sido removido. Garante o redirecionamento.
+                if (localStorage.getItem("session-token")) {
+                    localStorage.removeItem("session-token"); // Remove o token se ainda existir
+                }
+                window.location.href = "/login";
+                return;
+            }
+
+            // Verifica se o tipo de usuário é COLABORADOR
+            if (sessaoData.responseUsuarioDto.tipoUsuario !== "COLABORADOR") {
+                setPageError("Você não tem permissão para acessar esta página. Acesso restrito a Colaboradores.");
+            }
+        };
+
+        validateUserSessionAndAuthorize();
+    }, [buscarSessao, showNotificationPopup]);
 
     // Busca todas as cidades para filtros e formulários
     const fetchAllCidades = useCallback(async (): Promise<Cidade[]> => {
@@ -279,13 +337,7 @@ export default function OcorrenciasPage() {
                             {pageError && todasCidades.length === 0 && !isLoadingCidades && <p className="text-red-500 text-xs sm:text-sm mt-2">{pageError}</p>}
                         </div>
                         {/* Lista de ocorrências registradas */}
-                        <ListaOcorrenciasRegistradas
-                            ocorrencias={ocorrencias}
-                            isDeletingOcorrenciaId={deletingOcorrenciaId} // Nome da prop para o estado de exclusão do item
-                            onExcluirOcorrencia={promptExcluirOcorrencia} // Função que abre o modal de confirmação
-                            isLoadingOcorrencias={isLoadingOcorrencias}
-                            selectedCidadeId={selectedCidadeIdParaFiltro}
-                        />
+                        <ListaOcorrenciasRegistradas ocorrencias={ocorrencias} isDeletingOcorrenciaId={deletingOcorrenciaId} onExcluirOcorrencia={promptExcluirOcorrencia} isLoadingOcorrencias={isLoadingOcorrencias} selectedCidadeId={selectedCidadeIdParaFiltro} />
                     </div>
                     {/* Formulário para registrar nova ocorrência */}
                     <RegistrarOcorrenciaForm onFormSubmit={handleRegistrarOcorrencia} isSubmitting={isSubmitting} todasCidades={todasCidades} />

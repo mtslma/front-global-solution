@@ -3,27 +3,14 @@
 
 import React, { ChangeEvent } from "react"; // Importado ChangeEvent
 import { useForm, SubmitHandler } from "react-hook-form";
-import { CreateUsuario, Cidade } from "@/types/types";
+import { CreateUsuario, RegistroFormProps } from "@/types/types";
 
 export type RegistroFormData = Omit<CreateUsuario, "tipoUsuario" | "autenticaUsuario" | "idCidade"> & {
     emailUsuario: string;
     senhaUsuario: string;
     confirmarSenhaUsuario: string;
     idCidade: string;
-    // telefoneContato já está em CreateUsuario e será string aqui
 };
-
-interface RegistroFormProps {
-    onSubmit: SubmitHandler<RegistroFormData>;
-    isSubmitting: boolean;
-    listaCidades: Cidade[];
-    inputBaseClasses: string;
-    inputErrorClasses: string;
-    inputValidClasses: string;
-    errorTextClasses: string;
-    buttonClasses: string;
-    formSpacingClasses?: string;
-}
 
 export default function RegistroForm({ onSubmit, isSubmitting, listaCidades, inputBaseClasses, inputErrorClasses, inputValidClasses, errorTextClasses, buttonClasses, formSpacingClasses = "space-y-3 md:space-y-4" }: RegistroFormProps) {
     const {
@@ -31,14 +18,10 @@ export default function RegistroForm({ onSubmit, isSubmitting, listaCidades, inp
         handleSubmit,
         formState: { errors },
         watch,
-        setValue, // Adicionado setValue para controlar o input programaticamente
-        // reset, // O reset é chamado no componente pai (LoginPage)
+        setValue,
     } = useForm<RegistroFormData>();
 
     const handleFormSubmit: SubmitHandler<RegistroFormData> = (data) => {
-        // Antes de submeter, podemos re-limpar o telefone para enviar apenas números se a API preferir
-        // Mas como a validação pattern já aceita o formato com máscara, vamos enviar como está no form.
-        // Se a API espera apenas números: data.telefoneContato = data.telefoneContato.replace(/\D/g, '');
         onSubmit(data);
     };
 

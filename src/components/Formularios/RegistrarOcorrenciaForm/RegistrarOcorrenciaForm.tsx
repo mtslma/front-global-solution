@@ -4,34 +4,24 @@
 
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Cidade } from "@/types/types"; // Certifique-se que Cidade tem idCidade e nomeCidade
-
-// Tipagem para os dados do formulário de ocorrência
-interface NovaOcorrenciaFormData {
-    cep: string;
-    tipoOcorrencia: "ENCHENTE" | "ALAGAMENTO" | "DESLIZAMENTO" | "QUEIMADA" | string;
-    nivelGravidade: "BAIXO" | "MÉDIO" | "ALTO" | string;
-    idCidade: string; // Mantido como string, a conversão para número pode ocorrer no handler principal se necessário
-}
+import { Cidade, NovaOcorrenciaFormData } from "@/types/types";
 
 // Opções para os selects de Ocorrência
 const opTipoOcorrencia = ["ENCHENTE", "ALAGAMENTO", "DESLIZAMENTO", "QUEIMADA"];
 const opNivelGravidade = ["BAIXO", "MÉDIO", "ALTO"];
 
 interface RegistrarOcorrenciaFormProps {
-    // Função que vem da página principal para lidar com a lógica de API
     onFormSubmit: SubmitHandler<NovaOcorrenciaFormData>;
-    isSubmitting: boolean; // Estado de loading/submissão vindo da página principal
-    todasCidades: Cidade[]; // Lista de cidades para o select
-    // Classes de estilização opcionais para o <section> (o card)
+    isSubmitting: boolean;
+    todasCidades: Cidade[];
     className?: string;
 }
 
 // Valores padrão para o formulário, para uso no useForm e no reset
 const defaultOcorrenciaFormValues: NovaOcorrenciaFormData = {
     cep: "",
-    tipoOcorrencia: "ENCHENTE", // Valor padrão ou pode ser "" para forçar seleção
-    nivelGravidade: "BAIXO", // Valor padrão ou pode ser "" para forçar seleção
+    tipoOcorrencia: "ENCHENTE",
+    nivelGravidade: "BAIXO",
     idCidade: "",
 };
 
@@ -55,8 +45,6 @@ export default function RegistrarOcorrenciaForm({
     // Observa o valor do campo CEP para formatação manual
     const cepValue = watch("cep");
 
-    // --- Funções de Formatação ---
-
     // Função para formatar o CEP (XXXXX-XXX)
     const formatCep = (value: string | undefined): string => {
         if (!value) return "";
@@ -69,7 +57,7 @@ export default function RegistrarOcorrenciaForm({
         return cleanedValue;
     };
 
-    // --- Handlers para onChange dos inputs formatados ---
+    // Handlers
 
     const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;

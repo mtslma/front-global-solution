@@ -5,7 +5,6 @@ import React from "react";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 import { formatarCepDisplay, formatarTelefoneDisplay, getStatusFuncionamentoClasses } from "@/services/formatar-campos";
 
-// Componente para exibir as informações de um único abrigo em um "card" ou "caixa".
 export default function CaixaAbrigo({ abrigo, idAbrigoSendoExcluido, onExcluir }: CaixaAbrigoProps) {
     const abrigoIdComoString = String(abrigo.idAbrigo);
     const estaSendoExcluida = idAbrigoSendoExcluido === abrigoIdComoString;

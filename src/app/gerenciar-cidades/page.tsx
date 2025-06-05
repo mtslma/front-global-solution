@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ErrorPage from "@/components/ErrorPage/ErrorPage";
 import LoadingPage from "@/components/LoadingPage/LoadingPage";
 import { API_BASE, API_KEY } from "@/services/api-config";
-import { Cidade, NovaCidadeFormData } from "@/types/types";
+import { Cidade, NovaCidadeFormData, sessaoBody } from "@/types/types";
 import { SubmitHandler } from "react-hook-form";
 import AlertPopup from "@/components/AlertPopUp/AlertaPopUp";
 import CustomAlert from "@/components/CustomAlert/CustomAlert";
@@ -23,10 +23,10 @@ export default function CidadesPage() {
     const [cidades, setCidades] = useState<Cidade[]>([]);
 
     // Estados de UI e controle
-    const [isLoading, setIsLoading] = useState(true); // Carregamento inicial da página
-    const [isSubmitting, setIsSubmitting] = useState(false); // Submissão do formulário de registro
-    const [deletingCidadeId, setIsDeletingCidadeId] = useState<string | null>(null); // Feedback visual no item da lista
-    const [pageError, setPageError] = useState<string | null>(null); // Erro geral da página
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [deletingCidadeId, setIsDeletingCidadeId] = useState<string | null>(null);
+    const [pageError, setPageError] = useState<string | null>(null);
 
     // Estados para AlertPopup (notificações)
     const [popupMessage, setPopupMessage] = useState("");
@@ -44,6 +44,64 @@ export default function CidadesPage() {
         setIsPopupVisible(true);
         setTimeout(() => setIsPopupVisible(false), duration);
     }, []);
+
+    // Busca os dados da sessão do usuário
+    const buscarSessao = useCallback(async (token: string): Promise<sessaoBody | null> => {
+        try {
+            const response = await fetch(`${API_BASE}/sessao/${token}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+            });
+            if (!response.ok) {
+                // Se a sessão não for válida, remove o token do localStorage
+                localStorage.removeItem("session-token");
+                console.warn("Sessão existente inválida, token removido.");
+                return null;
+            }
+            const sessaoData: sessaoBody = await response.json();
+            // Validação adicional para os dados da sessão
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                localStorage.removeItem("session-token"); // Garante limpeza se dados da sessão forem inconsistentes
+                throw new Error("Dados da sessão inválidos ou usuário não encontrado.");
+            }
+            return sessaoData;
+        } catch (err) {
+            console.error("Erro de conexão ao buscar sessão:", err);
+            return null; // Retorna null em caso de erro de fetch ou parse
+        }
+    }, []);
+
+    // useEffect para validação da sessão do usuário e autorização de acesso à página
+    useEffect(() => {
+        const validateUserSessionAndAuthorize = async () => {
+            const token = localStorage.getItem("session-token");
+
+            if (!token) {
+                // Redireciona para login se não houver token
+                window.location.href = "/login";
+                return; // Interrompe a execução para evitar updates de estado desnecessários
+            }
+
+            const sessaoData = await buscarSessao(token);
+
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                // Se buscarSessao retornou null (sessão inválida, erro de API, etc.),
+                // o token já pode ter sido removido. Garante o redirecionamento.
+                if (localStorage.getItem("session-token")) {
+                    localStorage.removeItem("session-token"); // Remove o token se ainda existir
+                }
+                window.location.href = "/login";
+                return;
+            }
+
+            // Verifica se o tipo de usuário é COLABORADOR
+            if (sessaoData.responseUsuarioDto.tipoUsuario !== "COLABORADOR") {
+                setPageError("Você não tem permissão para acessar esta página. Acesso restrito a Colaboradores.");
+            }
+        };
+
+        validateUserSessionAndAuthorize();
+    }, [buscarSessao, showNotificationPopup]);
 
     // Busca a lista de cidades da API
     const buscarCidades = useCallback(
@@ -94,7 +152,7 @@ export default function CidadesPage() {
             const response = await fetch(`${API_BASE}/cidade/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
-                body: JSON.stringify({ cep: data.cep.replace(/\D/g, "") }),
+                body: JSON.stringify({ cep: data.cep.replace(/\D/g, ""), nomeCidade: data?.nomeCidade }),
             });
             if (response.ok || response.status === 201) {
                 showNotificationPopup("Cidade registrada com sucesso!", "success");
@@ -182,12 +240,7 @@ export default function CidadesPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
                     {/* Lista de cidades cadastradas */}
-                    <ListaCidadesCadastradas
-                        cidades={cidades}
-                        isDeleting={deletingCidadeId} // Estado para feedback visual no item sendo excluído
-                        onExcluirCidade={promptExcluirCidade} // Função que abre o modal de confirmação
-                        error={pageError} // Para exibir erros relacionados à lista, se houver
-                    />
+                    <ListaCidadesCadastradas cidades={cidades} isDeleting={deletingCidadeId} onExcluirCidade={promptExcluirCidade} error={pageError} />
                     {/* Formulário para registrar nova cidade */}
                     <RegistrarCidadeForm onFormSubmit={handleRegistrarCidade} isSubmitting={isSubmitting} />
                 </div>

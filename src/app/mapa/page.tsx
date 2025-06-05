@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Mapa from "../../components/Mapa/Mapa"; // Componente do mapa Leaflet
-import { Ocorrencia, Cidade, Abrigo, sessaoBody } from "@/types/types"; // Tipos de dados
-import { API_BASE, API_KEY } from "@/services/api-config"; // Configurações da API
-import ErrorPage from "../../components/ErrorPage/ErrorPage"; // Página de erro genérica
-import LoadingPage from "@/components/LoadingPage/LoadingPage"; // Página de carregamento genérica
-import { Routing } from "leaflet"; // Tipos para rotas do Leaflet
-import DetalhesCidadeSelecionada from "@/components/DetalhesCidadeSelecionada/DetalhesCidadeSelecionadad"; // Componente para detalhes da cidade
-import DetalhesRotaTracada from "@/components/DetalhesRotaTracada/DetalhesRotaTracada"; // Componente para detalhes da rota
-import SelectorCidade from "@/components/SelecionarCidade/SelecionarCidade"; // Componente para selecionar cidade
+import Mapa from "../../components/Mapa/Mapa";
+import { Ocorrencia, Cidade, Abrigo, sessaoBody } from "@/types/types";
+import { API_BASE, API_KEY } from "@/services/api-config";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
+import LoadingPage from "@/components/LoadingPage/LoadingPage";
+import { Routing } from "leaflet";
+import DetalhesCidadeSelecionada from "@/components/DetalhesCidadeSelecionada/DetalhesCidadeSelecionadad";
+import DetalhesRotaTracada from "@/components/DetalhesRotaTracada/DetalhesRotaTracada";
+import SelectorCidade from "@/components/SelecionarCidade/SelecionarCidade";
 
-// Componente principal da página Explorar
 export default function Explorar() {
     // Estados para dados da aplicação: cidades, seleção atual, abrigos, ocorrências e instruções de rota.
     const [cidades, setCidades] = useState<Cidade[]>([]);
@@ -59,7 +58,7 @@ export default function Explorar() {
             localStorage.removeItem("session-token"); // Remove token em caso de erro de rede.
             return null;
         }
-    }, []); // API_BASE e API_KEY são constantes globais.
+    }, []);
 
     // Busca abrigos da API para a cidade especificada por ID.
     const buscarAbrigosPorCidade = useCallback(async (idDaCidade: string | number) => {

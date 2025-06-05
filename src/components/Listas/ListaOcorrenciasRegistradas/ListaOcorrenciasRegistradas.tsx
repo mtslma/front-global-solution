@@ -1,16 +1,7 @@
 "use client";
 
 import CaixaOcorrencia from "@/components/CaixasInformacoes/CaixaOcorrencia/CaixaOcorrencia";
-import { Ocorrencia } from "@/types/types";
-
-interface ListaOcorrenciasRegistradasProps {
-    ocorrencias: Ocorrencia[];
-    isDeletingOcorrenciaId: string | null;
-    onExcluirOcorrencia?: (idOcorrencia: string) => void;
-    isLoadingOcorrencias: boolean;
-    selectedCidadeId: string | null;
-    className?: string;
-}
+import { ListaOcorrenciasRegistradasProps } from "@/types/types";
 
 export default function ListaOcorrenciasRegistradas({ ocorrencias, isDeletingOcorrenciaId, onExcluirOcorrencia, isLoadingOcorrencias, selectedCidadeId, className = "lg:col-span-2 p-6 bg-white rounded-xl shadow-xl border border-gray-200 h-full" }: ListaOcorrenciasRegistradasProps) {
     if (!selectedCidadeId) {

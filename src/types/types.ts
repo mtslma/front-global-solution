@@ -1,3 +1,4 @@
+import { RegistroFormData } from "@/components/Formularios/RegistrarUsuarioForm/RegistrarUsuarioForm";
 import { DivIcon, LatLng, LatLngExpression, PathOptions, Routing } from "leaflet";
 import { SubmitHandler } from "react-hook-form";
 
@@ -142,6 +143,11 @@ export interface CustomRoutingErrorEvent extends L.LeafletEvent {
   error: Error;
 }
 
+export interface EstiloCirculo {
+  radius: number;
+  pathOptions: PathOptions;
+}
+
 // ---------- Form Data Interfaces ----------
 
 export interface NovaCidadeFormData {
@@ -180,7 +186,18 @@ export interface TelefoneFormData {
   novoTelefone: string;
 }
 
-// ---------- UI Component Property Interfaces (Boxes, Lists, Popups, Forms) ----------
+export type CepFormData = {
+    novoCep: string;
+};
+
+export interface NovaOcorrenciaFormData {
+    cep: string;
+    tipoOcorrencia: "ENCHENTE" | "ALAGAMENTO" | "DESLIZAMENTO" | "QUEIMADA" | string;
+    nivelGravidade: "BAIXO" | "MÉDIO" | "ALTO" | string;
+    idCidade: string;
+}
+
+// ---------- UI Component and Prop Interfaces ----------
 
 export interface CaixaCidadeProps {
   cidade: Cidade;
@@ -194,9 +211,19 @@ export interface MarcadoresAbrigosProps {
     handleDirectRouteToShelter: (abrigo: Abrigo) => void;
 }
 
+export interface CustomAlertProps {
+    isOpen: boolean;
+    message: string;
+    title?: string;
+    onClose: () => void;
+    onConfirm?: () => void;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    hideCloseButton?: boolean;
+}
 
 export interface DetalhesCidadeSelecionadaProps {
-    cidadeSelecionada: Cidade | null; // A cidade pode não estar selecionada
+    cidadeSelecionada: Cidade | null;
     rotaInstrucoes: Routing.IInstruction[] | null;
     ocorrenciasAtuais: Ocorrencia[];
     abrigosAtuais: Abrigo[];
@@ -212,14 +239,6 @@ export interface CaixaOcorrenciaProps {
   ocorrencia: Ocorrencia;
   idOcorrenciaSendoExcluida: string | null;
   onExcluir?: (idOcorrenciaString: string) => void;
-}
-
-export interface ListaCidadesCadastradasProps {
-  cidades: Cidade[];
-  isDeleting: number | null;
-  onExcluirCidade: (idCidade: number) => void;
-  className?: string;
-  error?: string | null;
 }
 
 export interface AlertPopupProps {
@@ -267,6 +286,95 @@ export interface EditarTelefoneFormProps {
   errorTextClasses?: string;
   botaoSalvarClasses?: string;
   botaoCancelarClasses?: string;
+}
+
+export interface EditarCepFormProps {
+    onSubmit: SubmitHandler<CepFormData>;
+    onCancel: () => void;
+    isSubmitting: boolean;
+    initialNovoCep?: string;
+    inputClasses?: string;
+    errorTextClasses?: string;
+    botaoSalvarClasses?: string;
+    botaoCancelarClasses?: string;
+}
+
+export interface LoginFormProps {
+    onSubmit: SubmitHandler<loginBody>;
+    isSubmitting: boolean;
+    inputBaseClasses: string;
+    inputErrorClasses: string;
+    inputValidClasses: string;
+    errorTextClasses: string;
+    buttonClasses: string;
+    formSpacingClasses?: string;
+}
+
+export interface RegistrarCidadeFormProps {
+    onFormSubmit: SubmitHandler<NovaCidadeFormData>;
+    isSubmitting: boolean;
+    className?: string;
+}
+
+export interface RegistroFormProps {
+    onSubmit: SubmitHandler<RegistroFormData>;
+    isSubmitting: boolean;
+    listaCidades: Cidade[];
+    inputBaseClasses: string;
+    inputErrorClasses: string;
+    inputValidClasses: string;
+    errorTextClasses: string;
+    buttonClasses: string;
+    formSpacingClasses?: string;
+}
+
+export interface ActionLinkProps {
+    href: string;
+    iconClassName?: string;
+    title: string;
+    description?: string;
+}
+
+export interface LinkProps {
+    href: string;
+    iconName: string;
+    children: React.ReactNode;
+    toggleMenu?: () => void;
+};
+
+export interface ListaAbrigosCadastradosProps {
+    abrigos: Abrigo[];
+    isDeletingAbrigo: string | null;
+    onExcluirAbrigo?: (idAbrigo: string) => void;
+    isLoadingAbrigos: boolean;
+    selectedCidadeId: string | null;
+    className?: string;
+}
+
+export interface ListaCidadesCadastradasProps {
+    cidades: Cidade[];
+    isDeleting: string | null;
+    onExcluirCidade?: (idCidade: string) => void;
+    onEditarCidade?: (idCidade: string) => void;
+    onVerDetalhesCidade?: (idCidade: string) => void;
+    className?: string;
+    error?: string | null;
+}
+
+export interface ListaOcorrenciasRegistradasProps {
+    ocorrencias: Ocorrencia[];
+    isDeletingOcorrenciaId: string | null;
+    onExcluirOcorrencia?: (idOcorrencia: string) => void;
+    isLoadingOcorrencias: boolean;
+    selectedCidadeId: string | null;
+    className?: string;
+}
+
+export interface SelectorCidadeProps {
+    cidades: Cidade[];
+    cidadeSelecionada: Cidade | null;
+    handleCidadeSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    isLoading: boolean;
 }
 
 // ---------- General and Utility Interfaces ----------

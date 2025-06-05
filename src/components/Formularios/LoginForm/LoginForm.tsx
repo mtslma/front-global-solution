@@ -2,19 +2,8 @@
 
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { loginBody } from "@/types/types"; // Certifique-se que o caminho está correto
+import { loginBody, LoginFormProps } from "@/types/types"; // Certifique-se que o caminho está correto
 
-// Props que o componente LoginForm receberá
-interface LoginFormProps {
-    onSubmit: SubmitHandler<loginBody>;
-    isSubmitting: boolean;
-    inputBaseClasses: string;
-    inputErrorClasses: string;
-    inputValidClasses: string;
-    errorTextClasses: string;
-    buttonClasses: string;
-    formSpacingClasses?: string;
-}
 
 export default function LoginForm({
     onSubmit,

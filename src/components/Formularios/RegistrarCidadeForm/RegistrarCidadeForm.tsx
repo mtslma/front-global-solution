@@ -2,13 +2,7 @@
 
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { NovaCidadeFormData } from "@/types/types";
-
-interface RegistrarCidadeFormProps {
-    onFormSubmit: SubmitHandler<NovaCidadeFormData>;
-    isSubmitting: boolean;
-    className?: string;
-}
+import { NovaCidadeFormData, RegistrarCidadeFormProps } from "@/types/types";
 
 const defaultFormValues: NovaCidadeFormData = {
     cep: "",

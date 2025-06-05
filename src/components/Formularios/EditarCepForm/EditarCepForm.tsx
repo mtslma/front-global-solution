@@ -1,32 +1,15 @@
 // src/components/EditarCepForm/EditarCepForm.tsx
 "use client";
 
+import { CepFormData, EditarCepFormProps } from "@/types/types";
 import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-// Tipo para os dados do formulário de CEP
-export type CepFormData = {
-    novoCep: string;
-};
-
-// Props que o componente do formulário de CEP receberá
-interface EditarCepFormProps {
-    onSubmit: SubmitHandler<CepFormData>;
-    onCancel: () => void;
-    isSubmitting: boolean;
-    initialNovoCep?: string;
-    inputClasses?: string;
-    errorTextClasses?: string;
-    botaoSalvarClasses?: string;
-    botaoCancelarClasses?: string;
-}
 
 export default function EditarCepForm({
     onSubmit,
     onCancel,
     isSubmitting,
     initialNovoCep = "",
-    // Classes default (podem ser sobrescritas por props)
     inputClasses = "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
     errorTextClasses = "mt-1 text-xs text-red-600",
     botaoSalvarClasses = "px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed",
@@ -76,9 +59,6 @@ export default function EditarCepForm({
     // A função onSubmit da prop será chamada aqui
     const handleFormSubmit: SubmitHandler<CepFormData> = (data) => {
         onSubmit(data);
-        // O reset para o valor inicial (ou vazio) já é tratado pelo useEffect
-        // ou pode ser explicitamente resetado aqui se a lógica de 'initialNovoCep' mudar
-        // reset({ novoCep: initialNovoCep || "" });
     };
 
     return (

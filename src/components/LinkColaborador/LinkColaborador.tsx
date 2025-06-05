@@ -1,12 +1,5 @@
-import Link from "next/link"; // Certifique-se de que Link está importado
-
-// 1. Defina uma interface para as props do seu componente
-interface ActionLinkProps {
-    href: string;
-    iconClassName?: string; // Marque como opcional se nem sempre for fornecido
-    title: string;
-    description?: string; // Marque como opcional se nem sempre for fornecido
-}
+import { ActionLinkProps } from "@/types/types";
+import Link from "next/link";
 
 // 2. Use a interface para tipar as props e desestruture-as
 export default function ActionLink({ href, iconClassName, title, description }: ActionLinkProps) {

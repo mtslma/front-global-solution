@@ -8,7 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import AlertPopup from "@/components/AlertPopUp/AlertaPopUp";
 import CustomAlert from "@/components/CustomAlert/CustomAlert";
 import Link from "next/link";
-import { Abrigo, Cidade, NovoAbrigoFormData } from "@/types/types";
+import { Abrigo, Cidade, NovoAbrigoFormData, sessaoBody } from "@/types/types";
 import RegistrarAbrigoForm from "@/components/Formularios/RegistrarAbrigoForm/RegistrarAbrigoForm";
 import ListaAbrigosCadastrados from "@/components/Listas/ListaAbrigosRegistrados/ListaAbrigosRegistrados";
 
@@ -52,6 +52,64 @@ export default function AbrigosPage() {
         setIsPopupVisible(true);
         setTimeout(() => setIsPopupVisible(false), duration);
     }, []);
+
+    // Busca os dados da sessão do usuário
+    const buscarSessao = useCallback(async (token: string): Promise<sessaoBody | null> => {
+        try {
+            const response = await fetch(`${API_BASE}/sessao/${token}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+            });
+            if (!response.ok) {
+                // Se a sessão não for válida, remove o token do localStorage
+                localStorage.removeItem("session-token");
+                console.warn("Sessão existente inválida, token removido.");
+                return null;
+            }
+            const sessaoData: sessaoBody = await response.json();
+            // Validação adicional para os dados da sessão
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                localStorage.removeItem("session-token"); // Garante limpeza se dados da sessão forem inconsistentes
+                throw new Error("Dados da sessão inválidos ou usuário não encontrado.");
+            }
+            return sessaoData;
+        } catch (err) {
+            console.error("Erro de conexão ao buscar sessão:", err);
+            return null; // Retorna null em caso de erro de fetch ou parse
+        }
+    }, []);
+
+    // useEffect para validação da sessão do usuário e autorização de acesso à página
+    useEffect(() => {
+        const validateUserSessionAndAuthorize = async () => {
+            const token = localStorage.getItem("session-token");
+
+            if (!token) {
+                // Redireciona para login se não houver token
+                window.location.href = "/login";
+                return; // Interrompe a execução para evitar updates de estado desnecessários
+            }
+
+            const sessaoData = await buscarSessao(token);
+
+            if (!sessaoData || !sessaoData.responseUsuarioDto) {
+                // Se buscarSessao retornou null (sessão inválida, erro de API, etc.),
+                // o token já pode ter sido removido. Garante o redirecionamento.
+                if (localStorage.getItem("session-token")) {
+                    localStorage.removeItem("session-token"); // Remove o token se ainda existir
+                }
+                window.location.href = "/login";
+                return;
+            }
+
+            // Verifica se o tipo de usuário é COLABORADOR
+            if (sessaoData.responseUsuarioDto.tipoUsuario !== "COLABORADOR") {
+                setPageError("Você não tem permissão para acessar esta página. Acesso restrito a Colaboradores.");
+            }
+        };
+
+        validateUserSessionAndAuthorize();
+    }, [buscarSessao, showNotificationPopup]);
 
     // Busca todas as cidades para preencher o select de filtro e o formulário de registro
     const fetchAllCidades = useCallback(async (): Promise<Cidade[]> => {
@@ -98,7 +156,6 @@ export default function AbrigosPage() {
                     data
                         .map((abrigo: Abrigo) => ({
                             ...abrigo,
-                            // ATENÇÃO: Usar Math.random() para ID pode ser problemático se IDs da API forem ausentes e necessários para operações futuras.
                             idAbrigo: abrigo.idAbrigo || String(Math.random()),
                         }))
                         .filter((a: Abrigo) => !a.deleted);
@@ -194,7 +251,6 @@ export default function AbrigosPage() {
         if (!abrigoIdParaExcluir) return;
 
         setDeletingAbrigoId(abrigoIdParaExcluir); // Feedback visual no item da lista
-        // O fechamento do modal e reset do ID são feitos no onClose do CustomAlert
 
         try {
             const response = await fetch(`${API_BASE}/abrigo/${abrigoIdParaExcluir}`, {

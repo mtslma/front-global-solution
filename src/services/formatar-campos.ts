@@ -1,4 +1,4 @@
-import { CircleStyle, Ocorrencia } from "@/types/types";
+import { CircleStyle, EstiloCirculo, Ocorrencia } from "@/types/types";
 
 export const formatarCepDisplay = (cep: string | undefined): string => {
     if (!cep) {
@@ -116,4 +116,32 @@ export default function getCircleOptions (ocorrencia: Ocorrencia): CircleStyle {
             fillColor = "lightgrey";
     }
     return { radius, pathOptions: { color: strokeColor, fillColor: fillColor, fillOpacity: 0.35, weight: 2 } };
+};
+
+export const getEstiloCirculoSeveridade = (nivelGravidade?: string): EstiloCirculo => {
+    let radius: number, strokeColor: string, fillColor: string;
+    switch (nivelGravidade?.toUpperCase()) {
+        case "BAIXO":
+            radius = 75;
+            strokeColor = "#facc15";
+            fillColor = "#fde047";
+            break;
+        case "MÉDIO":
+        case "MODERADO":
+            radius = 100;
+            strokeColor = "#f59e0b";
+            fillColor = "#fbbf24";
+            break;
+        case "ALTO":
+        case "CRÍTICO":
+            radius = 150;
+            strokeColor = "#ef4444";
+            fillColor = "#f87171";
+            break;
+        default:
+            radius = 50;
+            strokeColor = "grey";
+            fillColor = "lightgrey";
+    }
+    return { radius, pathOptions: { color: strokeColor, fillColor: fillColor, fillOpacity: 0.4, weight: 2 } };
 };

@@ -1,33 +1,17 @@
-// Supondo que este arquivo esteja em: src/components/AbrigosPageSecoes/RegistrarAbrigoForm.tsx
-// ou similar, ajuste o caminho da importação de Cidade se necessário.
 "use client";
 
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Cidade } from "@/types/types"; // Certifique-se que Cidade tem idCidade e nomeCidade
+import { Cidade, NovoAbrigoFormData } from "@/types/types";
 
-// Tipagem para os dados do formulário de abrigo
-interface NovoAbrigoFormData {
-    idCidade: string;
-    nomeAbrigo: string;
-    cep: string;
-    capacidadeMaxima: string; // Mantido como string, a conversão para número ocorre no handler principal
-    enderecoAbrigo: string;
-    telefoneContato: string;
-    statusFuncionamento: "NORMAL" | "PARCIAL" | "INTERDITADO" | string;
-    nivelSegurancaAtual: "ALTO" | "MÉDIO" | "BAIXO" | string;
-}
-
-// Opções para os selects, conforme solicitado
+// Opções para os selects
 const opNivelSeguranca = ["ALTO", "MÉDIO", "BAIXO"];
 const opStatusFuncionamento = ["NORMAL", "PARCIAL", "INTERDITADO"];
 
 interface RegistrarAbrigoFormProps {
-    // Função que vem da página AbrigosPage para lidar com a lógica de API
     onFormSubmit: SubmitHandler<NovoAbrigoFormData>;
-    isSubmitting: boolean; // Estado de loading/submissão vindo da AbrigosPage
-    todasCidades: Cidade[]; // Lista de cidades para o select
-    // Classes de estilização opcionais para o <section> (o card)
+    isSubmitting: boolean;
+    todasCidades: Cidade[];
     className?: string;
 }
 
@@ -98,7 +82,7 @@ export default function RegistrarAbrigoForm({
         return cleanedValue;
     };
 
-    // --- Handlers para onChange dos inputs formatados ---
+    // Handlers de máscara
 
     const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -112,16 +96,14 @@ export default function RegistrarAbrigoForm({
         setValue("telefoneContato", formattedValue, { shouldValidate: true });
     };
 
-    // Handler interno que é chamado pelo handleSubmit do react-hook-form
     const internalFormSubmitHandler: SubmitHandler<NovoAbrigoFormData> = (data) => {
-        onFormSubmit(data); // Chama a função de submissão da página pai
-        reset(defaultAbrigoFormValues); // Limpa o formulário para os valores padrão após o submit
+        onFormSubmit(data);
+        reset(defaultAbrigoFormValues);
     };
 
     return (
         <section className={className}>
             <h2 className="text-2xl font-semibold text-indigo-700 mb-6 pb-3 border-b border-gray-300 text-center">Registrar Novo Abrigo</h2>
-            {/* O espaçamento vertical entre os elementos do formulário foi reduzido de space-y-6 para space-y-2 */}
             <form onSubmit={handleSubmit(internalFormSubmitHandler)} className="space-y-2">
                 {/* Cidade do Abrigo */}
                 <div>
@@ -222,7 +204,7 @@ export default function RegistrarAbrigoForm({
                         Telefone de Contato <span className="text-red-500">*</span>
                     </label>
                     <input
-                        type="tel" // Use type="tel" para semântica e possível otimização mobile
+                        type="tel"
                         id="telefoneContato-abrigo"
                         placeholder="(00) 00000-0000"
                         maxLength={15} // (XX) XXXXX-XXXX tem 15 caracteres

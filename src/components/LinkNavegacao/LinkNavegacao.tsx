@@ -1,14 +1,8 @@
 "use client";
 
+import { LinkProps } from "@/types/types";
 import Link from "next/link";
-import React from "react"; // Necessário para React.ReactNode
-
-type LinkProps = {
-    href: string;
-    iconName: string;
-    children: React.ReactNode; // Este é o texto do link
-    toggleMenu?: () => void; // Função para fechar o menu, se aplicável
-};
+import React from "react";
 
 export function LinkNavegacao({ href, iconName, children, toggleMenu }: LinkProps) {
     return (

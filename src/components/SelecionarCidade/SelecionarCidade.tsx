@@ -1,12 +1,5 @@
 import React from "react";
-import { Cidade } from "@/types/types"; 
-
-interface SelectorCidadeProps {
-    cidades: Cidade[];
-    cidadeSelecionada: Cidade | null;
-    handleCidadeSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    isLoading: boolean; 
-}
+import { SelectorCidadeProps } from "@/types/types";
 
 export default function SelectorCidade({ cidades, cidadeSelecionada, handleCidadeSelectChange, isLoading }: SelectorCidadeProps) {
     return (

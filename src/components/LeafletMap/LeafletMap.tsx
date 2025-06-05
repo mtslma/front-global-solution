@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { LeafletMapProps, Abrigo, CustomRoutingErrorEvent, CustomRoutingResultEvent, RoutingMachineProps } from "@/types/types";
-import { traduzirInstrucao } from "@/services/traducao";
+import { traduzirInstrucao } from "@/services/traduzir-rota";
 import MarcadoresOcorrencias from "@/components/Marcadores/MarcadoresOcorrencias/MarcadoresOcorrencias";
 import MarcadoresAbrigos from "@/components/Marcadores/MarcadoresAbrigos/MarcadoresAbrigos";
 import { criarIconeAbrigo, criarIconeAlerta } from "@/services/criar-icones";
@@ -24,6 +24,26 @@ L.Icon.Default.mergeOptions({
     shadowUrl: "/leaflet/marker-shadow.png",
 });
 
+// Estilo comum para os emojis, ajuste o font-size conforme necessário
+const estiloEmojiParaIcone = "font-size: 28px; display: block; text-align: center; line-height: 28px;";
+
+// Configuração do ícone de partida da rota com emoji
+const iconePartida = L.divIcon({
+    html: `<span style="${estiloEmojiParaIcone}">🕴🏻</span>`,
+    className: "", // Usar string vazia para evitar estilos padrão de borda/fundo do leaflet-div-icon
+    iconSize: [28, 28], // Tamanho do ícone [largura, altura] em pixels. Deve corresponder ao font-size e line-height.
+    iconAnchor: [14, 28], // Ponto de ancoragem [metade da largura, altura total para ancorar na base do emoji]
+    popupAnchor: [0, -28], // Posição do popup em relação ao iconAnchor [deslocamento x, -altura para ficar acima]
+});
+
+// Configuração do ícone de chegada da rota com emoji
+const iconeChegada = L.divIcon({
+    html: `<span style="${estiloEmojiParaIcone}">📍</span>`,
+    className: "", // Usar string vazia para evitar estilos padrão de borda/fundo
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -28],
+});
 // Componentes auxiliares do mapa
 function MapController({ center, zoom }: { center: LatLngExpression; zoom: number }) {
     const map = useMap();
@@ -45,12 +65,33 @@ function RoutingMachine({ start, end, onInstructionsChange, ocorrencias, showAle
             const controlOptions: Routing.RoutingControlOptions = {
                 waypoints: [L.latLng(start), L.latLng(end as LatLngTuple)],
                 routeWhileDragging: true,
-                show: false,
-                addWaypoints: false,
+                show: false, // Para não mostrar o itinerário padrão do leaflet-routing-machine
+                addWaypoints: false, // Para não permitir adicionar waypoints clicando no mapa
                 lineOptions: {
                     styles: [{ color: "#4F46E5", opacity: 0.8, weight: 6 }],
                     extendToWaypoints: false,
                     missingRouteTolerance: 0,
+                },
+                createMarker: function (i: number, waypoint: Routing.Waypoint, n: number) {
+                    let marker;
+                    if (i === 0) {
+                        // Marcador de partida
+                        marker = L.marker(waypoint.latLng, {
+                            icon: iconePartida,
+                            draggable: false,
+                        });
+                    } else if (i === n - 1) {
+                        // Marcador de chegada
+                        marker = L.marker(waypoint.latLng, {
+                            icon: iconeChegada,
+                            draggable: false,
+                        });
+                    } else {
+                        marker = L.marker(waypoint.latLng, {
+                            draggable: false,
+                        });
+                    }
+                    return marker;
                 },
             };
 
@@ -106,16 +147,20 @@ function RoutingMachine({ start, end, onInstructionsChange, ocorrencias, showAle
                     onInstructionsChange(null);
                 });
             } else {
+                // Se o controle já existe, apenas atualiza os waypoints
+                // A função createMarker (com os novos ícones) será usada automaticamente ao re-renderizar os waypoints
                 routingControlRef.current.setWaypoints([L.latLng(start), L.latLng(end as LatLngTuple)]);
             }
         } else {
+            // Se não há start ou end, remove o controle de rota existente
             if (routingControlRef.current) {
                 map.removeControl(routingControlRef.current);
                 routingControlRef.current = null;
             }
-            onInstructionsChange(null);
+            onInstructionsChange(null); // Limpa as instruções se não houver rota
         }
 
+        // Função de limpeza para remover o controle quando o componente é desmontado ou as dependências mudam
         return () => {
             if (routingControlRef.current) {
                 map.removeControl(routingControlRef.current);

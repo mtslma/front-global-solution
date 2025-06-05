@@ -1,13 +1,4 @@
-export interface CustomAlertProps {
-    isOpen: boolean;
-    message: string;
-    title?: string;
-    onClose: () => void;
-    onConfirm?: () => void;
-    confirmButtonText?: string;
-    cancelButtonText?: string;
-    hideCloseButton?: boolean;
-}
+import { CustomAlertProps } from "@/types/types";
 
 export default function CustomAlert({ isOpen, message, title = "Atenção", onClose, onConfirm, confirmButtonText, cancelButtonText, hideCloseButton = false }: CustomAlertProps) {
     if (!isOpen) {

@@ -53,7 +53,7 @@ export default function LoginPage() {
             console.error("Erro de conexão ao buscar sessão:", err);
             return null;
         }
-    }, []); 
+    }, []);
 
     // Função para buscar todas as cidades ativas para o formulário de registro
     const fetchAllCidades = useCallback(async (): Promise<Cidade[]> => {
@@ -90,7 +90,7 @@ export default function LoginPage() {
             }
         }
         verificarSessaoERedirecionar();
-    }, [buscarSessao]); 
+    }, [buscarSessao]);
 
     // useEffect para carregar a lista de cidades quando o formulário de registro é ativado
     useEffect(() => {
@@ -200,8 +200,8 @@ export default function LoginPage() {
                     <button
                         onClick={() => {
                             setIsRegistro(!isRegistro); // Alterna entre modo registro e login
-                            setPopupMessage(""); // Limpa mensagens de popup anteriores
-                            setIsPopupVisible(false); // Esconde o popup
+                            setPopupMessage("");
+                            setIsPopupVisible(false);
                             if (isRegistro) {
                                 resetRegistroFormHook();
                             }

@@ -2,16 +2,7 @@
 
 import React from "react";
 import CaixaAbrigo from "@/components/CaixasInformacoes/CaixaAbrigo/CaixaAbrigo";
-import { Abrigo } from "@/types/types";
-
-interface ListaAbrigosCadastradosProps {
-    abrigos: Abrigo[];
-    isDeletingAbrigo: string | null;
-    onExcluirAbrigo?: (idAbrigo: string) => void;
-    isLoadingAbrigos: boolean;
-    selectedCidadeId: string | null;
-    className?: string;
-}
+import { ListaAbrigosCadastradosProps } from "@/types/types";
 
 export default function ListaAbrigosCadastrados({
     abrigos,
