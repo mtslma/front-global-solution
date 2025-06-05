@@ -8,7 +8,7 @@ export default function Home() {
                 <div className="max-w-5xl">
                     <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[3.75rem] font-extrabold text-indigo-700 leading-tight mb-6">Abrigos acessíveis e confiáveis em tempos de necessidade</h1>
                     <p className="text-xl sm:text-2xl text-gray-700 font-medium mb-10 max-w-4xl mx-auto">Nossa plataforma inovadora e de fácil utilização conecta você a abrigos seguros e fornece informações vitais durante desastres naturais e eventos extremos.</p>
-                    <Link href="/login" className="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-4 px-10 sm:text-lg rounded-full transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                    <Link href="/login" className="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 text-sm rounded-full transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 sm:py-3 sm:px-8 sm:text-base md:py-4 md:px-10 md:text-lg">
                         Faça cadastro e comece a explorar!
                     </Link>
                 </div>
@@ -113,10 +113,7 @@ export default function Home() {
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl sm:text-4xl font-bold mb-6">Esteja Preparado. Encontre Seu Ponto Seguro.</h2>
                     <p className="text-lg sm:text-xl mb-10 leading-relaxed">Não espere pela crise. Conheça a plataforma Ponto Seguro e saiba como podemos ajudar você a se manter seguro. Acesse agora e explore os abrigos disponíveis.</p>
-                    <Link
-                        href="/mapa" // Comentário para quebrar a linha
-                        className="bg-white hover:bg-gray-100 text-indigo-700 font-bold py-4 px-10 sm:text-lg rounded-full transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-75"
-                    >
+                    <Link href="/mapa" className="bg-white hover:bg-gray-100 text-indigo-700 font-bold py-2 px-4 text-sm rounded-full transition duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-75 sm:py-3 sm:px-8 sm:text-base md:py-4 md:px-10 md:text-lg">
                         Acessar o mapa de Pontos Seguros
                     </Link>
                 </div>
