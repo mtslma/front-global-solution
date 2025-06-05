@@ -98,7 +98,7 @@ export default function DetalhesOcorrenciaPage() {
     const visualizacaoTipo = getVisualizacaoTipoOcorrencia(ocorrencia.tipoOcorrencia);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-8 sm:py-12 px-4">
+        <div className="min-h-screen  bg-slate-100  py-8 sm:py-12 px-4">
             <main className="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
                 {/* Cabeçalho da página: exibe tipo, severidade e informações básicas. */}
                 <header className={`p-6 sm:p-8 border-b-4 ${detalhesSeveridade.bordaCor}`}>
@@ -156,7 +156,7 @@ export default function DetalhesOcorrenciaPage() {
                                     <strong>ID da Cidade Vinculada:</strong> {ocorrencia.idCidade}
                                 </p>
                                 <p>
-                                    <strong>Status Administrativo:</strong>
+                                    <strong>Status:</strong>
                                     {/* Exibe o status da ocorrência (Ativa/Excluída). */}
                                     {ocorrencia.deleted ? <span className="ml-1 px-2 py-0.5 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Excluída</span> : <span className="ml-1 px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Ativa</span>}
                                 </p>
