@@ -73,5 +73,5 @@ O frontend da aplicação pode ser acessado em: [https://ponto-seguro.vercel.app
 
 ### Backend (API Java com Quarkus)
 
-A API está hospedada em: [[ADICIONAR O LINK AQUI](https://java-global-deploy.onrender.com)](https://java-global-deploy.onrender.com)
+A API está hospedada em: [https://java-global-deploy.onrender.com](https://java-global-deploy.onrender.com)
 
