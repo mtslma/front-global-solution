@@ -69,9 +69,9 @@ Para rodar o frontend do Ponto Seguro localmente, siga os passos abaixo:
 
 ### Frontend (Next.js)
 
-O frontend da aplicação pode ser acessado em: [ADICIONAR O LINK DA VERCEL]()
+O frontend da aplicação pode ser acessado em: [https://ponto-seguro.vercel.app](https://ponto-seguro.vercel.app)
 
 ### Backend (API Java com Quarkus)
 
-A API que faz conexão do Front com o banco de dados está hospedada em: [ADICIONAR O LINK AQUI]()
+A API está hospedada em: [[ADICIONAR O LINK AQUI](https://java-global-deploy.onrender.com)](https://java-global-deploy.onrender.com)
 
