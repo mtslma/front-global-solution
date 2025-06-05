@@ -6,8 +6,6 @@
 
 [![Assista ao Vídeo de Demonstração](https://img.youtube.com/vi/SEU_ID_DO_SEU_VIDEO/0.jpg)](https://www.youtube.com/watch?v=ID_DO_SEU_VIDEO)
 
-*(Substitua `ID_DO_SEU_VIDEO` pelo ID real do seu vídeo no YouTube. Se o vídeo estiver em outra plataforma, ajuste o link e a imagem de thumbnail conforme necessário).*
-
 ---
 
 ## Sobre o Projeto
