@@ -34,7 +34,7 @@ Eventos como as enchentes no Rio Grande do Sul (2024) e os deslizamentos em São
 * **Frontend:** Next.js, React, Tailwind CSS
 * **Backend:** Java, Quarkus
 * **Banco de Dados:** Oracle SQL
-* **Infraestrutura/Deploy:** Vercel
+* **Infraestrutura/Deploy:** Vercel e Render
 
 ---
 
@@ -74,4 +74,6 @@ O frontend da aplicação pode ser acessado em: [https://ponto-seguro.vercel.app
 ### Backend (API Java com Quarkus)
 
 A API está hospedada em: [https://java-global-deploy.onrender.com](https://java-global-deploy.onrender.com)
+
+O tempo de resposta para 1° chamada pode levar até 50s devido ao "sleep" da Render
 
