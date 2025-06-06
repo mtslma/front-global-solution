@@ -18,9 +18,9 @@
 
 ## Credenciais de acesso para um conta de COLABORADOR
 
-- Email: professorfiap@email.com 
-- Senha: senha1234
-- 
+- Email: `professorfiap@email.com` 
+- Senha: `senha1234`
+
 ---
 
 ## Sobre o Projeto
