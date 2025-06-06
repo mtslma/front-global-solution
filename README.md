@@ -4,7 +4,7 @@
 
 ## Vídeo Demonstrativo
 
-[![Assista ao Vídeo de Demonstração](https://img.youtube.com/vi/SEU_ID_DO_SEU_VIDEO/0.jpg)](https://www.youtube.com/watch?v=ID_DO_SEU_VIDEO)
+[https://youtu.be/kZ7YvzGWIlY](https://youtu.be/kZ7YvzGWIlY)
 
 ---
 
